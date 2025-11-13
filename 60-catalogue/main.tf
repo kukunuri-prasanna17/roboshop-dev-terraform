@@ -18,7 +18,7 @@ resource "terraform_data" "catalogue" {
   triggers_replace = [
   aws_instance.catalogue.id,
   local.ami_id,
-  "mongodb-dev.daws86s.cfd"
+  var.domain_name
 ]
 
   
