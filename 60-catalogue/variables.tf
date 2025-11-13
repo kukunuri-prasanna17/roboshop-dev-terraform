@@ -7,5 +7,5 @@ variable "environment" {
 }
 
 variable "domain_name" {
-    default = "mongodb-dev.daws86s.cfd"
+    default = "daws86s.cfd"
 }
