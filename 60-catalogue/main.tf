@@ -16,8 +16,11 @@ resource "aws_instance" "catalogue" {
 # Connect to instance using remote-exec provisioner through terraform_data
 resource "terraform_data" "catalogue" {
   triggers_replace = [
-    aws_instance.catalogue.id
-  ]
+  aws_instance.catalogue.id,
+  local.ami_id,
+  "mongodb-dev.daws86s.cfd"
+]
+
   
   connection {
     type     = "ssh"
