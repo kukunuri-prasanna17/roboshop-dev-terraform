@@ -16,12 +16,11 @@ resource "aws_instance" "catalogue" {
 # Connect to instance using remote-exec provisioner through terraform_data
 resource "terraform_data" "catalogue" {
   triggers_replace = [
-  aws_instance.catalogue.id,
-  local.ami_id,
-  var.domain_name
-]
+    aws_instance.catalogue.id,
+    local.ami_id,
+    "mongodb-dev.daws86s.cfd"  # Add the updated hostname here
+  ]
 
-  
   connection {
     type     = "ssh"
     user     = "ec2-user"
@@ -29,20 +28,19 @@ resource "terraform_data" "catalogue" {
     host     = aws_instance.catalogue.private_ip
   }
 
-  # terraform copies this file to catalogue server
   provisioner "file" {
-    source = "catalogue.sh"
+    source      = "catalogue.sh"
     destination = "/tmp/catalogue.sh"
   }
 
   provisioner "remote-exec" {
     inline = [
-        "chmod +x /tmp/catalogue.sh",
-        # "sudo sh /tmp/catalogue.sh"
-        "sudo sh /tmp/catalogue.sh catalogue ${var.environment}"
+      "chmod +x /tmp/catalogue.sh",
+      "sudo sh /tmp/catalogue.sh catalogue ${var.environment}"
     ]
   }
 }
+
 
 # stop the instance to take image
 resource "aws_ec2_instance_state" "catalogue" {
