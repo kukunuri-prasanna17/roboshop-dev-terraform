@@ -1,23 +1,27 @@
-
 #!/bin/bash
 
 component=$1
 environment=$2
 dnf install ansible -y
+#ansible-pull -U https://github.com/daws-86s/ansible-roboshop-roles-tf.git -e component=$component main.yaml
+# git clone ansible-playbook
+# cd ansible-playbook
+# ansible-playbook -i inventory main.yaml
 
-# Fix: assign URL properly
-REPO_URL="https://github.com/kukunuri-prasanna17/ansible-roboshop-roles-tf.git"
-
+REPO_URL= https://github.com/kukunuri-prasanna17/ansible-roboshop-roles-tf.git
 REPO_DIR=/opt/roboshop/ansible
 ANSIBLE_DIR=ansible-roboshop-roles-tf
 
 mkdir -p $REPO_DIR
 mkdir -p /var/log/roboshop/
-touch /var/log/roboshop/ansible.log
+touch ansible.log
 
 cd $REPO_DIR
 
-if [ -d "$ANSIBLE_DIR" ]; then
+# check if ansible repo is already cloned or not
+
+if [ -d $ANSIBLE_DIR ]; then
+
     cd $ANSIBLE_DIR
     git pull
 else
@@ -25,5 +29,4 @@ else
     cd $ANSIBLE_DIR
 fi
 
-echo "environment is: $environment"
 ansible-playbook -e component=$component -e env=$environment main.yaml
