@@ -68,14 +68,14 @@ resource "aws_lb_target_group" "catalogue" {
   deregistration_delay = 60 # waiting period before deleting the instance
 
   health_check {
-    healthy_threshold = 2
-    interval = 10
-    matcher = "200-299"
-    path = "/health"
+    healthy_threshold = 2     # success 
+    interval = 10             # every 10 secs check whether healthy or not
+    matcher = "200-299"       # sucess codes
+    path = "/health"          
     port = 8080
     protocol = "HTTP"
-    timeout = 2
-    unhealthy_threshold = 2
+    timeout = 2               # every 2 sec wait to get response from instances
+    unhealthy_threshold = 2   # failure
   }
 }
 
@@ -83,7 +83,7 @@ resource "aws_launch_template" "catalogue" {
   name = "${local.common_name_suffix}-catalogue"
   image_id = aws_ami_from_instance.catalogue.id
 
-  instance_initiated_shutdown_behavior = "terminate"
+  instance_initiated_shutdown_behavior = "terminate"   # terminating instance without stopping, Once it's complete all tasks
   instance_type = "t3.micro"
 
   vpc_security_group_ids = [local.catalogue_sg_id]
@@ -129,13 +129,13 @@ resource "aws_autoscaling_group" "catalogue" {
   name                      = "${local.common_name_suffix}-catalogue"
   max_size                  = 10
   min_size                  = 1
-  health_check_grace_period = 100
+  health_check_grace_period = 100    # cooling period before running health check
   health_check_type         = "ELB"
   desired_capacity          = 1
   force_delete              = false
   launch_template {
     id      = aws_launch_template.catalogue.id
-    version = aws_launch_template.catalogue.latest_version
+    version = aws_launch_template.catalogue.latest_version   # update template id, if it runs second time chances of changing template id
   }
   vpc_zone_identifier       = local.private_subnet_ids
   target_group_arns = [aws_lb_target_group.catalogue.arn]
@@ -183,29 +183,29 @@ resource "aws_autoscaling_policy" "catalogue" {
   }
 }
 
-resource "aws_lb_listener_rule" "catalogue" {
-  listener_arn = local.backend_alb_listener_arn
-  priority     = 10
+# resource "aws_lb_listener_rule" "catalogue" {
+#   listener_arn = local.backend_alb_listener_arn
+#   priority     = 10
 
-  action {
-    type             = "forward"
-    target_group_arn = aws_lb_target_group.catalogue.arn
-  }
+#   action {
+#     type             = "forward"
+#     target_group_arn = aws_lb_target_group.catalogue.arn
+#   }
 
-  condition {
-    host_header {
-      values = ["catalogue.backend-alb-${var.environment}.${var.domain_name}"]
-    }
-  }
-}
+#   condition {
+#     host_header {
+#       values = ["catalogue.backend-alb-${var.environment}.${var.domain_name}"]
+#     }
+#   }
+# }
 
-resource "terraform_data" "catalogue_local" {
-  triggers_replace = [
-    aws_instance.catalogue.id
-  ]
+# resource "terraform_data" "catalogue_local" {
+#   triggers_replace = [
+#     aws_instance.catalogue.id
+#   ]
   
-  depends_on = [aws_autoscaling_policy.catalogue]
-  provisioner "local-exec" {
-    command = "aws ec2 terminate-instances --instance-ids ${aws_instance.catalogue.id}"
-  }
-}
+#   depends_on = [aws_autoscaling_policy.catalogue]
+#   provisioner "local-exec" {
+#     command = "aws ec2 terminate-instances --instance-ids ${aws_instance.catalogue.id}"
+#   }
+# }
