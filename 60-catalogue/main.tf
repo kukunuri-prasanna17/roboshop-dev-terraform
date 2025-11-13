@@ -36,7 +36,7 @@ resource "terraform_data" "catalogue" {
   provisioner "remote-exec" {
     inline = [
       "chmod +x /tmp/catalogue.sh",
-      "sudo sh /tmp/catalogue.sh catalogue ${var.environment}"
+      "sudo sh /tmp/catalogue.sh catalogue ${var.environment}  mongodb-dev.daws86s.cfd"
     ]
   }
 }
