@@ -23,9 +23,9 @@ cd $REPO_DIR
 if [ -d $ANSIBLE_DIR ]; then
 
     cd $ANSIBLE_DIR
-    git pull
+    sudo git pull
 else
-    git clone $REPO_URL
+    sudo git clone $REPO_URL
     cd $ANSIBLE_DIR
 fi
 
