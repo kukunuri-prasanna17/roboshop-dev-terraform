@@ -10,6 +10,7 @@ REPO_DIR=/opt/roboshop/ansible
 ANSIBLE_DIR=ansible-roboshop-roles-tf
 
 # Fix log directory & permissions
+sudo rm -f /var/log/roboshop/ansible.log
 sudo mkdir -p /var/log/roboshop/
 sudo touch /var/log/roboshop/ansible.log
 sudo chmod 777 /var/log/roboshop/
