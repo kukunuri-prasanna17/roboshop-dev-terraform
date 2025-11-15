@@ -12,11 +12,14 @@ REPO_URL=https://github.com/kukunuri-prasanna17/ansible-roboshop-roles-tf.git
 REPO_DIR=/opt/roboshop/ansible
 ANSIBLE_DIR=ansible-roboshop-roles-tf
 
+
 mkdir -p $REPO_DIR
-mkdir -p /var/log/roboshop/
-touch  /var/log/roboshop/ansible.log
+sudo mkdir -p /var/log/roboshop/
+sudo touch /var/log/roboshop/ansible.log
+sudo chmod 755 /var/log/roboshop/ansible.log
 
 cd $REPO_DIR
+
 
 # check if ansible repo is already cloned or not
 
