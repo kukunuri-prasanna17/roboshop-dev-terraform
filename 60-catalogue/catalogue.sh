@@ -2,33 +2,27 @@
 
 component=$1
 environment=$2
-
 dnf install ansible -y
 
-REPO_URL=https://github.com/kukunuri-prasanna17/ansible-roboshop-roles-tf.git
+REPO_URL=https://github.com/daws-86s/ansible-roboshop-roles-tf.git
 REPO_DIR=/opt/roboshop/ansible
 ANSIBLE_DIR=ansible-roboshop-roles-tf
 
-# Fix log directory & permissions
-sudo rm -f /var/log/roboshop/ansible.log
-sudo mkdir -p /var/log/roboshop/
-sudo touch /var/log/roboshop/ansible.log
-sudo chmod 777 /var/log/roboshop/
-sudo chmod 666 /var/log/roboshop/ansible.log
+mkdir -p $REPO_DIR
+mkdir -p /var/log/roboshop/
+touch ansible.log
 
-# prepare ansible folder
-sudo mkdir -p $REPO_DIR
 cd $REPO_DIR
 
-# clone or pull
+# check if ansible repo is already cloned or not
+
 if [ -d $ANSIBLE_DIR ]; then
+
     cd $ANSIBLE_DIR
-    sudo git pull
+    git pull
 else
-    sudo git clone $REPO_URL
+    git clone $REPO_URL
     cd $ANSIBLE_DIR
 fi
-
-# run ansible
 echo "environment is: $2"
-sudo ansible-playbook -e component=$component -e env=$environment main.yaml
+ansible-playbook -e component=$component -e env=$environment main.yaml
