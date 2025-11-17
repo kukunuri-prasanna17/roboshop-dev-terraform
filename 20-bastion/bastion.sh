@@ -12,7 +12,6 @@ sudo yum -y install terraform
 # sudo lvreduce -r -L 6G /dev/mapper/RootVG-rootVol
 
 # creating databases
-cd /home/ec2-user
 git clone https://github.com/daws-86s/roboshop-dev-infra.git
 cd roboshop-dev-infra/40-databases
 terraform init
