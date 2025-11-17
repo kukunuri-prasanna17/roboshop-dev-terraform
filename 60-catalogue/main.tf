@@ -149,6 +149,7 @@ resource "aws_autoscaling_group" "catalogue" {
     preferences {
       min_healthy_percentage = 50 # atleast 50% of the instances should be up and running
     }
+    triggers = ["launch template"]
   }
   
   dynamic "tag" {  # we will get the iterator with name as tag
