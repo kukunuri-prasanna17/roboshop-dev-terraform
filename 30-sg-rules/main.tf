@@ -284,7 +284,7 @@ resource "aws_security_group_rule" "frontend_alb_public" {
 
 resource "aws_security_group_rule" "vpn_public" {
   type              = "ingress"
-  security_group_id = local.vpn_sg_id
+  security_group_id = local.open_vpn_sg_id
   cidr_blocks = ["0.0.0.0/0"]
   from_port         = 22
   protocol          = "tcp"
