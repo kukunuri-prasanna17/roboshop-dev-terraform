@@ -12,7 +12,7 @@ sudo yum -y install terraform
 # sudo lvreduce -r -L 6G /dev/mapper/RootVG-rootVol
 
 # creating databases
-git clone  https://github.com/kukunuri-prasanna17/roboshop-dev-terraform.git
-cd roboshop-dev-infra/40-databases
-terraform init
-terraform apply -auto-approve
+# git clone  https://github.com/kukunuri-prasanna17/roboshop-dev-terraform.git
+# cd roboshop-dev-infra/40-databases
+# terraform init
+# terraform apply -auto-approve
