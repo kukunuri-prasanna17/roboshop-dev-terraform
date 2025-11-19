@@ -13,4 +13,19 @@ locals {
     payment_sg_id = data.aws_ssm_parameter.payment_sg_id.value
     frontend_sg_id = data.aws_ssm_parameter.frontend_sg_id.value
     open_vpn_sg_id = data.aws_ssm_parameter.open_vpn_sg_id.value
+
+ vpn_ingress_rules ={
+    mysql = {
+        sg_id = local.mysql_sg_id
+        port= 22
+    }
+    mysql = {
+        sg_id = local.mysql_sg_id
+        port= 3306
+    }
+    redis = {
+        sg_id = local.redis_sg_id
+        port= 22
+    }
+}
 }
